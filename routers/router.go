@@ -9,6 +9,7 @@ import (
 func StartServer() {
 
 	// Web Page
+	http.Handle("/", http.FileServer(http.Dir("static")))
 	http.Handle("/monitor/", http.StripPrefix("/monitor/", http.FileServer(http.Dir("static"))))
 
 	// API
