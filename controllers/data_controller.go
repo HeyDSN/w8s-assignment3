@@ -13,7 +13,7 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	files := basePath + "/job/data.json"
+	files := basePath + "/repository/data.json"
 
 	byteValue, err := os.ReadFile(files)
 	if err != nil {
