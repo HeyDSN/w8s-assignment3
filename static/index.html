@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Weather Monitor</title>
+    <title>Data Monitor</title>
     <style>
       html,
       body {
@@ -59,7 +59,7 @@
     </style>
   </head>
   <body>
-    <p>Weather Monitor</p>
+    <p>Data Monitor</p>
     <table>
       <tr>
         <th>Wind</th>
@@ -79,7 +79,7 @@
       var baseUrl = $(location).attr("protocol") + "//" + $(location).attr("host");
       function doRequest() {
         $.ajax({
-          url: baseUrl + "/api/weather",
+          url: baseUrl + "/api/get-data",
           success: function (result) {
             var currentWind = $("#currentWind").html();
             if (currentWind != result.status.wind) {

@@ -1,6 +1,6 @@
 package models
 
-type Weather struct {
+type Data struct {
 	Status Status `json:"status"`
 }
 
