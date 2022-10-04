@@ -1,0 +1,174 @@
+<html>
+  <head>
+    <title>Weather Monitor</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        background-color: #2c3539;
+        color: #fff;
+      }
+
+      html {
+        display: table;
+        margin: auto;
+      }
+
+      body {
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      p {
+        text-align: center;
+        font-size: 6em;
+        margin: 20px;
+      }
+
+      table {
+        margin: auto;
+        border: solid 1px #fff;
+        border-collapse: collapse;
+      }
+
+      tr {
+        margin: auto;
+        padding: 20px;
+        border: solid 1px #fff;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      th {
+        margin: auto;
+        padding: 20px;
+        border: solid 1px #fff;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 4em;
+      }
+
+      td {
+        margin: auto;
+        padding: 20px;
+        border: solid 1px #fff;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 4em;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Weather Monitor</p>
+    <table>
+      <tr>
+        <th>Wind</th>
+        <th>Water</th>
+      </tr>
+      <tr>
+        <td id="currentWind" style="height: 2em">Loading...</td>
+        <td id="currentWater" style="height: 2em">Loading...</td>
+      </tr>
+    </table>
+    <p style="font-size: 1.5em; margin: 10px">*Data will be checked every 10 seconds.</p>
+    <p style="font-size: 1.5em; margin: 10px">*Data updated on server every 15 second.</p>
+    <p id="status" style="font-size: 1.5em; margin: 10px">Waiting...</p>
+    <p id="timestamp" style="font-size: 1.5em; margin: 10px">Last Update: ...</p>
+    <script src="jquery.min.js"></script>
+    <script>
+      var baseUrl = $(location).attr("protocol") + "//" + $(location).attr("host");
+      function doRequest() {
+        $.ajax({
+          url: baseUrl + "/api/weather",
+          success: function (result) {
+            var currentWind = $("#currentWind").html();
+            if (currentWind != result.status.wind) {
+              if (result.status.wind < 20) {
+                $("#currentWind").fadeOut(1000, function () {
+                  $(this).css("color", "#00ff00").html(result.status.wind).fadeIn(2000);
+                });
+              } else if (result.status.wind < 40) {
+                $("#currentWind").fadeOut(1000, function () {
+                  $(this).css("color", "#ffff00").html(result.status.wind).fadeIn(2000);
+                });
+              } else if (result.status.wind < 60) {
+                $("#currentWind").fadeOut(1000, function () {
+                  $(this).css("color", "#ff9900").html(result.status.wind).fadeIn(2000);
+                });
+              } else if (result.status.wind < 80) {
+                $("#currentWind").fadeOut(1000, function () {
+                  $(this).css("color", "#ff0000").html(result.status.wind).fadeIn(2000);
+                });
+              } else {
+                $("#currentWind").fadeOut(1000, function () {
+                  $(this).css("color", "#990000").html(result.status.wind).fadeIn(2000);
+                });
+              }
+            }
+
+            var currentWater = $("#currentWater").html();
+            if (currentWater != result.status.water) {
+              if (result.status.water < 20) {
+                $("#currentWater").fadeOut(1000, function () {
+                  $(this).css("color", "#00ff00").html(result.status.water).fadeIn(2000);
+                });
+              } else if (result.status.water < 40) {
+                $("#currentWater").fadeOut(1000, function () {
+                  $(this).css("color", "#ffff00").html(result.status.water).fadeIn(2000);
+                });
+              } else if (result.status.water < 60) {
+                $("#currentWater").fadeOut(1000, function () {
+                  $(this).css("color", "#ff9900").html(result.status.water).fadeIn(2000);
+                });
+              } else if (result.status.water < 80) {
+                $("#currentWater").fadeOut(1000, function () {
+                  $(this).css("color", "#ff0000").html(result.status.water).fadeIn(2000);
+                });
+              } else {
+                $("#currentWater").fadeOut(1000, function () {
+                  $(this).css("color", "#990000").html(result.status.water).fadeIn(2000);
+                });
+              }
+            }
+
+            $("#status").html("Last Status: Success to fetch data.");
+            // create date YYYY-MM-DD HH:MM:SS
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+            if (month < 10) {
+              month = "0" + month;
+            }
+            if (day < 10) {
+              day = "0" + day;
+            }
+            if (hour < 10) {
+              hour = "0" + hour;
+            }
+            if (minute < 10) {
+              minute = "0" + minute;
+            }
+            if (second < 10) {
+              second = "0" + second;
+            }
+            var timestamp = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+            $("#timestamp").html("Last Update: " + timestamp);
+          },
+          error: function (result) {
+            $("#status").html("Last Status: Failed to fetch data.");
+          }
+        });
+      }
+      doRequest();
+      $(document).ready(function () {
+        setInterval(function () {
+          doRequest();
+        }, 10000);
+      });
+    </script>
+  </body>
+</html>
